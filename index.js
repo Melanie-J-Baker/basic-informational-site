@@ -7,7 +7,7 @@ const server = http.createServer((req, res) => {
     __dirname,
     req.url === "/" ? "index.html" : req.url
   );
-  console.log("Sending request for file", path.basename(filepath));
+  console.log("Sending request", path.basename(filepath));
   const ext = path.extname(filepath);
   let contentType = "text/html";
   switch (ext) {
@@ -22,9 +22,9 @@ const server = http.createServer((req, res) => {
   fs.readFile(filepath, (err, data) => {
     if (err) {
       if (err.code == "ENOENT") {
-        console.log("File not found!");
+        console.log("404 File not found!");
         fs.readFile(path.join(__dirname, "404.html"), "utf-8", (err, data) => {
-          res.writeHead(200, { "content-type": contentType });
+          res.writeHead(200, { "Content-Type": contentType });
           res.end(data);
         });
       } else {
@@ -32,11 +32,11 @@ const server = http.createServer((req, res) => {
         res.end(`Server Error ${err.code}`);
       }
     } else {
-      res.writeHead(200, { "content-type": contentType });
+      res.writeHead(200, { "Content-Type": contentType });
       res.end(data);
-      console.log("COMPLETED");
+      console.log("Finished");
     }
   });
 });
 
-server.listen(8080, () => console.log("Server listening on port 8080"));
+server.listen(8080, () => console.log("Listening on port 8080"));
